@@ -1,6 +1,6 @@
 name: "Battery Charge"
 description: "Charge Pv-Battery from Grid"
-version: "1.0.0"
+version: "1.0.1"
 slug: "pv_battery_charge"
 init: false
 arch:
