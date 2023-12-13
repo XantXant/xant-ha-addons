@@ -30,9 +30,8 @@ class Forecastsolar:
         return self.whd[1]
 
 if __name__ == "__main__":
-    # Kaipstraße 11, 4540 Pfarrkirchen bei Bad Hall
-    latitude = 48.02957409938468
-    longitude = 14.196212048933777
+    latitude = 48.037222
+    longitude = 14.416944
     declination = 24
     azimuth = -45
     modules_power = (410 * 35) / 1000

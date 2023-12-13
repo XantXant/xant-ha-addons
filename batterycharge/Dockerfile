@@ -19,4 +19,4 @@ RUN pip install -r requirements.txt
 COPY app ./app
 
 # Run main.py
-CMD ["python", "/app/main.py"]
+CMD ["python", "/app/main.py", "notest"]

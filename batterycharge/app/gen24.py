@@ -106,7 +106,7 @@ class Gen24:
 
 
 if __name__ == "__main__":
-    gen = Gen24("fronius.xant.at")
+    gen = Gen24("192.168.1.178")
     gen.getData()
     gen.printData()
     gen.chargeBattery(100)

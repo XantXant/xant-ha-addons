@@ -1,23 +1,36 @@
 import datetime
+import sys
 import time
 from forecastsolar import Forecastsolar
 from gen24 import Gen24
 from awattarcharge import Awattar
 from regeln import getstartendtime
 import functools
+import json
 
 print = functools.partial(print, flush=True)
 
 if __name__ == "__main__":
-    # Kaipstraße 11, 4540 Pfarrkirchen bei Bad Hall
-    latitude = 48.02957409938468
-    longitude = 14.196212048933777
+    istest = True
+    host = "192.168.1.178"
+    latitude = 48.037222
+    longitude = 14.416944
     declination = 24
     azimuth = -45
     modules_power = (410 * 35) / 1000
 
-    #gen24
-    host = "fronius.xant.at"
+    if len(sys.argv) == 2:
+        with open("/data/options.json") as file:
+            istest = False
+
+            data = json.load(file)
+
+            host = data["gen24_ip_dns"]
+            latitude = data["forecast_latitude"]
+            longitude = data["forecast_longitude"]
+            declination = data["forecast_declination"]
+            azimuth = data["forecast_azimuth"]
+            modules_power = data["forecast_modules_power"]
 
     print("")
     print(f"{' Init ':=^30}")
@@ -31,8 +44,7 @@ if __name__ == "__main__":
 
     fc = Forecastsolar(latitude, longitude, declination, azimuth, modules_power)
     gen24 = Gen24(host)
-    tarif = Awattar()
-    # tarif = Awattar(True)
+    tarif = Awattar(istest)
 
     print("")
     print(f"{' Start ':=^30}")
