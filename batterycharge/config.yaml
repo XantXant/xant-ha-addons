@@ -1,0 +1,25 @@
+name: "Battery Charge"
+description: "Charge Pv-Battery from Grid"
+version: "1.0.0"
+slug: "pv_battery_charge"
+init: false
+arch:
+  - aarch64
+  - amd64
+  - armhf
+  - armv7
+  - i386
+options:
+  gen24_ip_dns: 127.0.0.1
+  forecast_latitude: 48.037222
+  forecast_longitude: 14.416944
+  forecast_declination: 24
+  forecast_azimuth: -45
+  forecast_modules_power: 14.35
+schema:
+  gen24_ip_dns: str
+  forecast_latitude: float
+  forecast_longitude: float
+  forecast_declination: int
+  forecast_azimuth: int
+  forecast_modules_power: float

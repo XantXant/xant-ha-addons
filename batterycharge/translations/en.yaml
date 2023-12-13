@@ -1,0 +1,19 @@
+configuration:
+  gen24_ip_dns:
+    name: IP / DNS of Fronius GEN24
+    description: The IP / DNS of the Fronius GEN24 Inverter for the modbus communication
+  forecast_latitude:
+    name: Latitude of location
+    description:  -90 (south) … 90 (north); handeled with a precission of 0.0001 or abt. 10 m
+  forecast_longitude:
+    name: Longitude of location
+    description: -180 (west) … 180 (east); handeled with a precission of 0.0001 or abt. 10 m
+  forecast_declination:
+    name: Plane declination
+    description: 0 (horizontal) … 90 (vertical)
+  forecast_azimuth:
+    name: Plane azimuth
+    description: -180 … 180 (-180 = north, -90 = east, 0 = south, 90 = west, 180 = north)
+  forecast_modules_power:
+    name: Module power
+    description: installed modules power in kilo watt
