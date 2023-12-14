@@ -31,6 +31,8 @@ if __name__ == "__main__":
             declination = data["forecast_declination"]
             azimuth = data["forecast_azimuth"]
             modules_power = data["forecast_modules_power"]
+    else:
+        print(f"{' Test ':=^30}")
 
     print("")
     print(f"{' Init ':=^30}")
@@ -70,7 +72,7 @@ if __name__ == "__main__":
                 # nur ausgeben wenn eine neue Stunde angefangen hat
                 last_hour = act_time.hour
                 price_euro_p_mwh, price_cent_p_kwh = tarif.get_act_marcetprice(act_time.timestamp())
-                print("act   ", act_time, "price", price_euro_p_mwh, "Euro/MWh", price_cent_p_kwh, "Cent/kWh")
+                print(f'{act_time.strftime("%d.%m.%Y %H:%M:%S")} Price {price_euro_p_mwh:.2f} Euro/MWh {price_cent_p_kwh:.2f} Cent/kWh')
 
             act_tst = act_time.timestamp()
             start_tst, end_tst = getstartendtime(act_tst, rule_start_hour, rule_end_hour)
@@ -83,7 +85,7 @@ if __name__ == "__main__":
             if ret is True:
                 if isCharging is False:
                     isCharging = True
-                    print(f"{' Charge Battery ':=^30}", "SoC", gen24.getSoC(), price_mwh, "Euro/MWh", price_kwh, "Cent/kWh")
+                    print(f"{' Charge Battery ':=^30}", f'SoC {gen24.getSoC():.1f} Price {price_mwh:.2f} Euro/MWh {price_kwh:.2f} Cent/kWh')
                     gen24.chargeBattery(rule_max_power)
 
                 # damit modbus (gen24) nicht ins timeout läuft

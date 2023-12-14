@@ -79,30 +79,25 @@ class Gen24:
         self.setChaGriSet(0)
 
     def setStorCtl_Mod(self, mode):
-        if self.StorCtl_Mod != mode:
-            self.client.write(mode, FC=6, ADR=40348)         # StorCtl_Mod
+        self.client.write(mode, FC=6, ADR=40348)         # StorCtl_Mod
 
     def setDischargeRate(self, percent):
         us_percent = ctypes.c_uint16(percent*100).value
-        if self.OutWRte != us_percent:
-            self.client.write(us_percent, FC=6, ADR=40355)   # DischargeRate
+        self.client.write(us_percent, FC=6, ADR=40355)   # DischargeRate
 
     def setChargeRate(self, percent):
         us_percent = ctypes.c_uint16(percent*100).value
-        if self.InWRte != us_percent:
-            self.client.write(us_percent, FC=6, ADR=40356)   # ChargeRate
+        self.client.write(us_percent, FC=6, ADR=40356)   # ChargeRate
 
     def setTimeout(self, timeout):
         self.client.write(timeout, FC=6, ADR=40358)   # Seconds
 
     def setMinReserve(self, percent):
         percent = percent * 100
-        if self.MinRsvPct != percent:
-            self.client.write(percent, FC=6, ADR=40350)  # MinReserve
+        self.client.write(percent, FC=6, ADR=40350)  # MinReserve
     
     def setChaGriSet(self, state):
-        if self.ChaGriSet != state:
-            self.client.write(state, FC=6, ADR=40360)
+        self.client.write(state, FC=6, ADR=40360)
 
 
 if __name__ == "__main__":
