@@ -1,3 +1,6 @@
+## 1.0.5
+- add doc
+- bugfix rank of lowest hours
 ## 1.0.4
 - add rule charge config
 - add correct timezone

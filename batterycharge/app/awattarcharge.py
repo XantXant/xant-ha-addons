@@ -68,6 +68,7 @@ class Awattar:
         price_mwh = 0
         price_kwh = 0
         act_in_range = False
+        act_rank = 0
         for rank, elem in enumerate(rl[0:count]):
             elem_start = elem['start_timestamp'] // 1000
             elem_end = elem['end_timestamp'] // 1000

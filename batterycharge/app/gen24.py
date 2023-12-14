@@ -111,7 +111,7 @@ if __name__ == "__main__":
     gen.printData()
     # gen.chargeBattery(2000)
     # gen.setMinReserve(50)
-    # gen.backToNormal()
+    gen.backToNormal()
     time.sleep(5)
     gen.printData()
     print(gen.getSoC())
