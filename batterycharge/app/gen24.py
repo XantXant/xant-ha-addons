@@ -50,9 +50,9 @@ class Gen24:
         print(f"TimeoutPeriod:       {self.InOutWRte_RvrtTms:11} s -->{self.InOutWRte_RvrtTms/60:8} min")
         print(f"ChaGridSet:          {self.ChaGriSet:11}")
 
-    def chargeBattery(self, percent):
+    def chargeBattery(self, power):
         self.getData()
-        self.setDischargeRate(percent)
+        self.setDischargeRatePower(power)
         self.setStorCtl_Mod(3)
     
     def backToNormal(self):
@@ -81,12 +81,18 @@ class Gen24:
     def setStorCtl_Mod(self, mode):
         self.client.write(mode, FC=6, ADR=40348)         # StorCtl_Mod
 
+    def setDischargeRatePower(self, power):
+        per = power * 100 / self.c_WChaMax
+        if per > 100:
+            per = 100
+        self.setDischargeRate(-per)
+
     def setDischargeRate(self, percent):
-        us_percent = ctypes.c_uint16(percent*100).value
+        us_percent = ctypes.c_uint16(int(percent*100)).value
         self.client.write(us_percent, FC=6, ADR=40355)   # DischargeRate
 
     def setChargeRate(self, percent):
-        us_percent = ctypes.c_uint16(percent*100).value
+        us_percent = ctypes.c_uint16(int(percent*100)).value
         self.client.write(us_percent, FC=6, ADR=40356)   # ChargeRate
 
     def setTimeout(self, timeout):
@@ -102,10 +108,10 @@ class Gen24:
 
 if __name__ == "__main__":
     gen = Gen24("192.168.1.178")
-    gen.getData()
     gen.printData()
-    gen.chargeBattery(100)
-    gen.setMinReserve(50)
+    # gen.chargeBattery(2000)
+    # gen.setMinReserve(50)
+    # gen.backToNormal()
     time.sleep(5)
     gen.printData()
     print(gen.getSoC())

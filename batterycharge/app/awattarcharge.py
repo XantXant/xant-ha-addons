@@ -68,7 +68,7 @@ class Awattar:
         price_mwh = 0
         price_kwh = 0
         act_in_range = False
-        for elem in rl[0:count]:
+        for rank, elem in enumerate(rl[0:count]):
             elem_start = elem['start_timestamp'] // 1000
             elem_end = elem['end_timestamp'] // 1000
             # if newdata is True:
@@ -76,9 +76,10 @@ class Awattar:
             if act >= elem_start and act < elem_end:
                 act_in_range = True
                 price_mwh, price_kwh = self.get_marketprice(elem)
+                act_rank = rank
                 break
         
-        return act_in_range, price_mwh, price_kwh
+        return act_in_range, price_mwh, price_kwh, act_rank
 
     def get_marketprice(self, item):
         price = item['marketprice']

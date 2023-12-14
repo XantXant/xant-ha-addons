@@ -1,6 +1,6 @@
 name: "Battery Charge"
 description: "Charge Pv-Battery from grid"
-version: "1.0.3"
+version: "1.0.4"
 slug: "pv_battery_charge"
 init: false
 arch:
@@ -16,6 +16,15 @@ options:
   forecast_declination: 24
   forecast_azimuth: -45
   forecast_modules_power: 14.35
+  rule_charge: true
+  rule_charge_start_hour: 23
+  rule_charge_end_hour: 6
+  rule_charge_hours_count: 3
+  rule_charge_hours_power_1: 1000
+  rule_charge_hours_power_2: 1000
+  rule_charge_hours_power_3: 1000
+  rule_charge_hours_power_4: 1000
+  rule_charge_hours_power_5: 1000
 schema:
   gen24_ip_dns: str
   forecast_latitude: float
@@ -23,3 +32,12 @@ schema:
   forecast_declination: int
   forecast_azimuth: int
   forecast_modules_power: float
+  rule_charge: bool
+  rule_charge_start_hour: int(0,23)
+  rule_charge_end_hour: int(0,23)
+  rule_charge_hours_count: int(1,5)
+  rule_charge_hours_power_1: int
+  rule_charge_hours_power_2: int
+  rule_charge_hours_power_3: int
+  rule_charge_hours_power_4: int
+  rule_charge_hours_power_5: int

@@ -18,6 +18,11 @@ if __name__ == "__main__":
     declination = 24
     azimuth = -45
     modules_power = (410 * 35) / 1000
+    rule_charge = True
+    rule_charge_start_hour = 20
+    rule_charge_end_hour = 6
+    rule_charge_hours_count = 3
+    rule_charge_hours_power = [2000, 1500, 1000]
 
     if len(sys.argv) == 2:
         with open("/data/options.json") as file:
@@ -31,6 +36,11 @@ if __name__ == "__main__":
             declination = data["forecast_declination"]
             azimuth = data["forecast_azimuth"]
             modules_power = data["forecast_modules_power"]
+            rule_charge = data["rule_charge"]
+            rule_charge_start_hour = data["rule_charge_start_hour"]
+            rule_charge_end_hour = data["rule_charge_end_hour"]
+            rule_charge_hours_count = data["rule_charge_hours_count"]
+            rule_charge_hours_power = [data["rule_charge_hours_power_1"], data["rule_charge_hours_power_2"], data["rule_charge_hours_power_3"], data["rule_charge_hours_power_4"], data["rule_charge_hours_power_5"]]
     else:
         print(f"{' Test ':=^30}")
 
@@ -43,18 +53,19 @@ if __name__ == "__main__":
     print("module kWp : ", modules_power)
     print("host       : ", host)
     print("-------------------------------------------------")
+    print(f"Rule charge: {rule_charge}")
+    if rule_charge:
+        print(f"Start from {rule_charge_start_hour} until {rule_charge_end_hour} in the cheapest {rule_charge_hours_count} hours")
+        for i, p in enumerate(rule_charge_hours_power):
+            print(f"{i+1}: {p}")
+    print("-------------------------------------------------")
 
     fc = Forecastsolar(latitude, longitude, declination, azimuth, modules_power)
     gen24 = Gen24(host)
     tarif = Awattar(istest)
 
     print("")
-    print(f"{' Start ':=^30}")
-
-    rule_start_hour = 20
-    rule_end_hour = 6
-    rule_max_hours = 3
-    rule_max_power = -5
+    print(f"{' Start ':=^30} W")
 
     isCharging = False
 
@@ -75,24 +86,26 @@ if __name__ == "__main__":
                 print(f'{act_time.strftime("%d.%m.%Y %H:%M:%S")} Price {price_euro_p_mwh:.2f} Euro/MWh {price_cent_p_kwh:.2f} Cent/kWh')
 
             act_tst = act_time.timestamp()
-            start_tst, end_tst = getstartendtime(act_tst, rule_start_hour, rule_end_hour)
+            start_tst, end_tst = getstartendtime(act_tst, rule_charge_start_hour, rule_charge_end_hour)
 
             ret = False
             price = 0
             if act_tst >= start_tst and act_tst < end_tst:
-                ret, price_mwh, price_kwh = tarif.isLowestPrice(act_tst, start_tst, end_tst, rule_max_hours)
+                ret, price_mwh, price_kwh, rank = tarif.isLowestPrice(act_tst, start_tst, end_tst, rule_charge_hours_count)
+                if rank >= len(rule_charge_hours_power):
+                    rank = 0
 
             if ret is True:
                 if isCharging is False:
                     isCharging = True
-                    print(f"{' Charge Battery ':=^30}", f'SoC {gen24.getSoC():.1f} Price {price_mwh:.2f} Euro/MWh {price_kwh:.2f} Cent/kWh')
-                    gen24.chargeBattery(rule_max_power)
+                    print(f"{' Charge Battery ':=^30}", f'SoC {gen24.getSoC():.1f} Price {price_mwh:.2f} Euro/MWh {price_kwh:.2f} Cent/kWh with max. {rule_charge_hours_power[rank]} W [{rank + 1}]')
+                    gen24.chargeBattery(rule_charge_hours_power[rank])
 
                 # damit modbus (gen24) nicht ins timeout läuft
                 refreshcount += 1
                 if refreshcount > 5:
                     refreshcount = 0
-                    gen24.chargeBattery(rule_max_power)
+                    gen24.chargeBattery(rule_charge_hours_power[rank])
             else:
                 if isCharging is True:
                     isCharging = False
