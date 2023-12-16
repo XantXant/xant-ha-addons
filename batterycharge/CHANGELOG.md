@@ -1,3 +1,6 @@
+## 1.0.6
+- better logs
+- TODO rule_charge true/false, always active
 ## 1.0.5
 - add doc
 - bugfix rank of lowest hours

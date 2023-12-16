@@ -79,9 +79,14 @@ if __name__ == "__main__":
 
             act_time = datetime.datetime.now()
 
+            hour_changed = False
+
             if last_hour != act_time.hour:
                 # nur ausgeben wenn eine neue Stunde angefangen hat
                 last_hour = act_time.hour
+                hour_changed = True
+            
+            if hour_changed:
                 price_euro_p_mwh, price_cent_p_kwh = tarif.get_act_marcetprice(act_time.timestamp())
                 print(f'{act_time.strftime("%d.%m.%Y %H:%M:%S")} Price {price_euro_p_mwh:.2f} Euro/MWh {price_cent_p_kwh:.2f} Cent/kWh')
 
@@ -98,8 +103,10 @@ if __name__ == "__main__":
             if ret is True:
                 if isCharging is False:
                     isCharging = True
-                    print(f"{' Charge Battery ':=^30}", f'SoC {gen24.getSoC():.1f} Price {price_mwh:.2f} Euro/MWh {price_kwh:.2f} Cent/kWh with max. {rule_charge_hours_power[rank]} W [{rank + 1}]')
                     gen24.chargeBattery(rule_charge_hours_power[rank])
+                
+                if hour_changed:
+                    print(f"{' Charge Battery ':=^30}", f'SoC {gen24.getSoC():.1f} Price {price_mwh:.2f} Euro/MWh {price_kwh:.2f} Cent/kWh with max. {rule_charge_hours_power[rank]} W [{rank + 1}]')
 
                 # damit modbus (gen24) nicht ins timeout läuft
                 refreshcount += 1
