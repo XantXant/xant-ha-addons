@@ -1,7 +1,7 @@
-name: "Battery Charge"
+name: "Battery Charge Dev"
 description: "Charge Pv-Battery from grid"
 version: "1.0.7"
-slug: "pv_battery_charge"
+slug: "pv_battery_charge_dev"
 init: false
 arch:
   - aarch64
