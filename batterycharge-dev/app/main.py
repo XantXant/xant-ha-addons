@@ -7,6 +7,7 @@ from awattarcharge import Awattar
 from regeln import getstartendtime
 import functools
 import json
+import os
 
 print = functools.partial(print, flush=True)
 
@@ -27,6 +28,9 @@ if __name__ == "__main__":
     if len(sys.argv) == 2:
         with open("/data/options.json") as file:
             istest = False
+
+            os.environ['TZ'] = 'Europe/Vienna'
+            time.tzset()
 
             data = json.load(file)
 
