@@ -67,6 +67,15 @@ if __name__ == "__main__":
     print("")
     print(f"{' Start ':=^30} W")
 
+    now = datetime.datetime.now()
+    local_now = now.astimezone()
+    local_tz = local_now.tzinfo
+    local_tzname = local_tz.tzname(local_now)
+    print(now)
+    print(local_now)
+    print(local_tz)
+    print(local_tzname)
+
     isCharging = False
 
     last_hour = 55
