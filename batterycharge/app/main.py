@@ -7,6 +7,7 @@ from awattarcharge import Awattar
 from regeln import getstartendtime
 import functools
 import json
+import os
 
 print = functools.partial(print, flush=True)
 
@@ -27,6 +28,9 @@ if __name__ == "__main__":
     if len(sys.argv) == 2:
         with open("/data/options.json") as file:
             istest = False
+
+            os.environ['TZ'] = 'Europe/Vienna'
+            time.tzset()
 
             data = json.load(file)
 
@@ -56,7 +60,7 @@ if __name__ == "__main__":
     print(f"Rule charge: {rule_charge}")
     if rule_charge:
         print(f"Start from {rule_charge_start_hour} until {rule_charge_end_hour} in the cheapest {rule_charge_hours_count} hours")
-        for i, p in enumerate(rule_charge_hours_power):
+        for i, p in enumerate(rule_charge_hours_power[:rule_charge_hours_count]):
             print(f"{i+1}: {p}")
     print("-------------------------------------------------")
 
