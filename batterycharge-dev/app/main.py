@@ -68,17 +68,10 @@ if __name__ == "__main__":
     gen24 = Gen24(host)
     tarif = Awattar(istest)
 
+    print(f'Forecast location: {fc.getLocation()}')
+
     print("")
     print(f"{' Start ':=^30} W")
-
-    now = datetime.datetime.now()
-    local_now = now.astimezone()
-    local_tz = local_now.tzinfo
-    local_tzname = local_tz.tzname(local_now)
-    print(now)
-    print(local_now)
-    print(local_tz)
-    print(local_tzname)
 
     isCharging = False
 
@@ -86,8 +79,20 @@ if __name__ == "__main__":
 
     refreshcount = 0
 
+    last_fc_today = 0
+    last_fc_tomorrow = 0
+
     try:
         while True:
+            # Forecast
+            new_fc_today = fc.getForecastsolarToday()
+            new_fc_tomorrow = fc.getForecastsolarTomorrow()
+            if new_fc_today != last_fc_today or new_fc_tomorrow != last_fc_tomorrow:
+                last_fc_today = new_fc_today
+                last_fc_tomorrow = new_fc_tomorrow
+                print(f'Forcast Today: {last_fc_today:5} Tomorrow: {last_fc_tomorrow:5}')
+
+            # Awattar
             tarif.getNewData()
 
             act_time = datetime.datetime.now()
@@ -113,24 +118,25 @@ if __name__ == "__main__":
                 if rank >= len(rule_charge_hours_power):
                     rank = 0
 
-            if ret is True:
-                if isCharging is False:
-                    isCharging = True
-                    gen24.chargeBattery(rule_charge_hours_power[rank])
-                
-                if hour_changed:
-                    print(f"{' Charge Battery ':=^30}", f'SoC {gen24.getSoC():.1f} Price {price_mwh:.2f} Euro/MWh {price_kwh:.2f} Cent/kWh with max. {rule_charge_hours_power[rank]} W [{rank + 1}]')
+            if rule_charge is True:
+                if ret is True:
+                    if isCharging is False:
+                        isCharging = True
+                        gen24.chargeBattery(rule_charge_hours_power[rank])
+                    
+                    if hour_changed:
+                        print(f"{' Charge Battery ':=^30}", f'SoC {gen24.getSoC():.1f} Price {price_mwh:.2f} Euro/MWh {price_kwh:.2f} Cent/kWh with max. {rule_charge_hours_power[rank]} W [{rank + 1}]')
 
-                # damit modbus (gen24) nicht ins timeout läuft
-                refreshcount += 1
-                if refreshcount > 5:
-                    refreshcount = 0
-                    gen24.chargeBattery(rule_charge_hours_power[rank])
-            else:
-                if isCharging is True:
-                    isCharging = False
-                    print(f"{' Back to normal ':=^30}", "SoC", gen24.getSoC())
-                    gen24.backToNormal()
+                    # damit modbus (gen24) nicht ins timeout läuft
+                    refreshcount += 1
+                    if refreshcount > 5:
+                        refreshcount = 0
+                        gen24.chargeBattery(rule_charge_hours_power[rank])
+                else:
+                    if isCharging is True:
+                        isCharging = False
+                        print(f"{' Back to normal ':=^30}", "SoC", gen24.getSoC())
+                        gen24.backToNormal()
 
             time.sleep(60)
     except KeyboardInterrupt:

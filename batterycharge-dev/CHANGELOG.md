@@ -1,3 +1,7 @@
+## 1.0.9
+- forecast test
+## 1.0.8
+- timezone works
 ## 1.0.7
 - TODO check timezone
 - TODO rule_charge true/false, always active
