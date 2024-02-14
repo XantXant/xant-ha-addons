@@ -1,3 +1,5 @@
+## 1.0.11
+- forecast test fix2
 ## 1.0.10
 - forecast test fix
 ## 1.0.9
