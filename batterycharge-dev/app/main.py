@@ -90,7 +90,7 @@ if __name__ == "__main__":
             if new_fc_today != last_fc_today or new_fc_tomorrow != last_fc_tomorrow:
                 last_fc_today = new_fc_today
                 last_fc_tomorrow = new_fc_tomorrow
-                print(f'Forcast Today: {last_fc_today:5} Tomorrow: {last_fc_tomorrow:5}')
+                print(f'Forecast Today: {last_fc_today:5} Tomorrow: {last_fc_tomorrow:5}')
 
             # Awattar
             tarif.getNewData()

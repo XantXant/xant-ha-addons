@@ -1,3 +1,5 @@
+## 1.0.12
+- urllib expections
 ## 1.0.11
 - forecast test fix2
 ## 1.0.10

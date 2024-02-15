@@ -1,4 +1,5 @@
-from urllib.request import urlopen 
+from urllib.request import urlopen
+from urllib.error import URLError, HTTPError
 import json
 import datetime
 import functools
@@ -31,9 +32,21 @@ class Awattar:
             else:
                 url = f"https://api.awattar.at/v1/marketdata?start={int(url_date_start.timestamp()*1000)}&end={int(url_date_end.timestamp()*1000)}"
                 # print(url)
-                webdata = urlopen(url)
-                self.webdata = json.loads(webdata.read())
-                # print(self.webdata)
+                try:
+                    webdata = urlopen(url)
+                except HTTPError as e:
+                    print("Forecast: HTTPError: ", e.code)
+                except URLError as e:
+                    print("Forecast: URLError: ", e.reason)
+                except ValueError:
+                    print("Forecast: ValueError")
+                except TypeError:
+                    print("Forecast: TypeError")
+                except OSError:
+                    print("Forecast: OSError")
+                else:
+                    self.webdata = json.loads(webdata.read())
+                    # print(self.webdata)
 
             self.data = self.webdata['data']
             self.data_sorted = sorted(self.data, key=self.get_marketprice)
