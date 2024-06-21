@@ -55,6 +55,11 @@ class Gen24:
         self.setDischargeRatePower(power)
         self.setStorCtl_Mod(3)
     
+    def dischargeBattery(self, power):
+        self.getData()
+        self.setChargeRatePower(power)
+        self.setStorCtl_Mod(3)
+    
     def backToNormal(self):
         percent = 100
         self.getData()
@@ -86,6 +91,13 @@ class Gen24:
         if per > 100:
             per = 100
         self.setDischargeRate(-per)
+    
+    def setChargeRatePower(self, power):
+        per = power * 100 / self.c_WChaMax
+        if per > 100:
+            per = 100
+        print(per)
+        self.setChargeRate(-per)
 
     def setDischargeRate(self, percent):
         us_percent = ctypes.c_uint16(int(percent*100)).value
@@ -109,9 +121,15 @@ class Gen24:
 if __name__ == "__main__":
     gen = Gen24("192.168.1.178")
     gen.printData()
+
     # gen.chargeBattery(10000)
-    gen.setMinReserve(30)
-    # gen.backToNormal()
+
+    # gen.dischargeBattery(1000)
+
+    gen.backToNormal()
+
+    # gen.setMinReserve(20)
+    
     time.sleep(5)
     gen.printData()
     print(gen.getSoC())

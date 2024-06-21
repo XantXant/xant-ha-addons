@@ -1,3 +1,5 @@
+## 1.0.13
+- stop charging max SoC
 ## 1.0.12
 - urllib expections
 ## 1.0.11

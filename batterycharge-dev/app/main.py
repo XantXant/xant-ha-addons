@@ -75,6 +75,8 @@ if __name__ == "__main__":
 
     isCharging = False
 
+    isMaxSoC = False
+
     last_hour = 55
 
     refreshcount = 0
@@ -136,6 +138,17 @@ if __name__ == "__main__":
                     if isCharging is True:
                         isCharging = False
                         print(f"{' Back to normal ':=^30}", "SoC", gen24.getSoC())
+                        gen24.backToNormal()
+            else:
+                if gen24.getSoC() >= 80:
+                    if isMaxSoC is False:
+                        isMaxSoC = True
+                        print(f"{' Stop charging @ ':=^30}", "SoC", gen24.getSoC())
+                        gen24.setChargeRate(0)
+                    gen24.getData()
+                else:
+                    if isMaxSoC is True:
+                        isMaxSoC = False
                         gen24.backToNormal()
 
             time.sleep(60)
