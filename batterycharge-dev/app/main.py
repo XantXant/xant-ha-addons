@@ -141,11 +141,11 @@ if __name__ == "__main__":
                         gen24.backToNormal()
             else:
                 if gen24.getSoC() >= 80:
+                    gen24.getData()
                     if isMaxSoC is False:
                         isMaxSoC = True
                         print(f"{' Stop charging @ ':=^30}", "SoC", gen24.getSoC())
-                        gen24.setChargeRate(0)
-                    gen24.getData()
+                        gen24.dischargeBattery(0)
                 else:
                     if isMaxSoC is True:
                         isMaxSoC = False

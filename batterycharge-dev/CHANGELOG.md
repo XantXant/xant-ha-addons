@@ -1,3 +1,5 @@
+## 1.0.14
+- stop charging max SoC fix
 ## 1.0.13
 - stop charging max SoC
 ## 1.0.12
