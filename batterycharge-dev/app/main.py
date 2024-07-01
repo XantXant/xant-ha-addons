@@ -30,6 +30,7 @@ if __name__ == "__main__":
     if len(sys.argv) == 2:
         print(os.listdir("/"))
         print(os.listdir("/data/"))
+        print("test")
 
         with open("/data/options.json") as file:
             istest = False
