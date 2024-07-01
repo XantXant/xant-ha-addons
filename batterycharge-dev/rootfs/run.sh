@@ -10,5 +10,5 @@ else
     MQTT_USER=$(bashio::services mqtt "username")
     MQTT_PASS=$(bashio::services mqtt "password")
     bashio::log.info "Configured'$MQTT_HOST' mqtt broker."
-    echo "$MQTT_HOST $MQTT_PORT $MQTT_USER $MQTT_PASS" > /data/mqtt.txt
+    echo "$MQTT_HOST $MQTT_PORT $MQTT_USER $MQTT_PASS" > /mqtt.txt
 fi
