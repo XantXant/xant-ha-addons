@@ -24,6 +24,8 @@ if __name__ == "__main__":
     rule_charge_end_hour = 6
     rule_charge_hours_count = 3
     rule_charge_hours_power = [2000, 1500, 1000]
+    max_soc = True
+    max_soc_value = 80
 
     if len(sys.argv) == 2:
         with open("/data/options.json") as file:
@@ -33,6 +35,8 @@ if __name__ == "__main__":
             time.tzset()
 
             data = json.load(file)
+
+            print(data)
 
             host = data["gen24_ip_dns"]
             latitude = data["forecast_latitude"]
@@ -45,6 +49,8 @@ if __name__ == "__main__":
             rule_charge_end_hour = data["rule_charge_end_hour"]
             rule_charge_hours_count = data["rule_charge_hours_count"]
             rule_charge_hours_power = [data["rule_charge_hours_power_1"], data["rule_charge_hours_power_2"], data["rule_charge_hours_power_3"], data["rule_charge_hours_power_4"], data["rule_charge_hours_power_5"]]
+            max_soc = data["max_soc"]
+            max_soc_value = data["max_soc_value"]
     else:
         print(f"{' Test ':=^30}")
 
@@ -70,6 +76,11 @@ if __name__ == "__main__":
 
     print(f'Forecast location: {fc.getLocation()}')
 
+    print("")
+    print("-------------------------------------------------")
+    if max_soc is True:
+        print(f"Max SoC: {max_soc_value}")
+        print("-------------------------------------------------")
     print("")
     print(f"{' Start ':=^30} W")
 
@@ -105,7 +116,7 @@ if __name__ == "__main__":
                 # nur ausgeben wenn eine neue Stunde angefangen hat
                 last_hour = act_time.hour
                 hour_changed = True
-            
+
             if hour_changed:
                 price_euro_p_mwh, price_cent_p_kwh = tarif.get_act_marcetprice(act_time.timestamp())
                 print(f'{act_time.strftime("%d.%m.%Y %H:%M:%S")} Price {price_euro_p_mwh:.2f} Euro/MWh {price_cent_p_kwh:.2f} Cent/kWh')
@@ -125,7 +136,7 @@ if __name__ == "__main__":
                     if isCharging is False:
                         isCharging = True
                         gen24.chargeBattery(rule_charge_hours_power[rank])
-                    
+
                     if hour_changed:
                         print(f"{' Charge Battery ':=^30}", f'SoC {gen24.getSoC():.1f} Price {price_mwh:.2f} Euro/MWh {price_kwh:.2f} Cent/kWh with max. {rule_charge_hours_power[rank]} W [{rank + 1}]')
 
@@ -140,17 +151,18 @@ if __name__ == "__main__":
                         print(f"{' Back to normal ':=^30}", "SoC", gen24.getSoC())
                         gen24.backToNormal()
             else:
-                if gen24.getSoC() >= 80:
-                    gen24.getData()
-                    if isMaxSoC is False:
-                        isMaxSoC = True
-                        print(f"{' Stop charging @ ':=^30}", "SoC", gen24.getSoC())
-                    gen24.dischargeBattery(0)
-                else:
-                    if isMaxSoC is True:
-                        isMaxSoC = False
-                        print(f"{' Back to normal ':=^30}", "SoC", gen24.getSoC())
-                        gen24.backToNormal()
+                if max_soc is True:
+                    if gen24.getSoC() >= max_soc_value:
+                        gen24.getData()
+                        if isMaxSoC is False:
+                            isMaxSoC = True
+                            print(f"{' Stop charging @ ':=^30}", "SoC", gen24.getSoC())
+                        gen24.dischargeBattery(0)
+                    else:
+                        if isMaxSoC is True:
+                            isMaxSoC = False
+                            print(f"{' Back to normal ':=^30}", "SoC", gen24.getSoC())
+                            gen24.backToNormal()
 
             time.sleep(60)
     except KeyboardInterrupt:

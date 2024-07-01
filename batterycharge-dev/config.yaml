@@ -1,6 +1,6 @@
 name: "Battery Charge Dev"
 description: "Charge Pv-Battery from grid"
-version: "1.0.15"
+version: "1.0.16"
 slug: "pv_battery_charge_dev"
 init: false
 arch:
@@ -9,6 +9,8 @@ arch:
   - armhf
   - armv7
   - i386
+services: 
+  - "mqtt:need"
 options:
   gen24_ip_dns: 127.0.0.1
   forecast_latitude: 48.037222
@@ -25,6 +27,8 @@ options:
   rule_charge_hours_power_3: 1000
   rule_charge_hours_power_4: 1000
   rule_charge_hours_power_5: 1000
+  max_soc: false
+  max_soc_value: 80
 schema:
   gen24_ip_dns: str
   forecast_latitude: float
@@ -41,3 +45,5 @@ schema:
   rule_charge_hours_power_3: int
   rule_charge_hours_power_4: int
   rule_charge_hours_power_5: int
+  max_soc: bool
+  max_soc_value: int(0,100)

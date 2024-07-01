@@ -1,3 +1,5 @@
+## 1.0.16
+- stop charging max SoC config und mqtt test
 ## 1.0.15
 - stop charging max SoC fix 2
 ## 1.0.14
