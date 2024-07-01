@@ -33,7 +33,6 @@ if __name__ == "__main__":
     print(sys.argv[2])
     print(sys.argv[3])
     print(sys.argv[4])
-    print(sys.argv[5])
 
     if len(sys.argv) >= 2:
         print(os.listdir("/"))
