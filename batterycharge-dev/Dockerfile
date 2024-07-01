@@ -19,6 +19,8 @@ RUN pip install -r requirements.txt
 
 COPY rootfs /
 
+RUN chmod a+x /run.sh
+
 RUN ["/run.sh"]
 
 COPY app ./app
