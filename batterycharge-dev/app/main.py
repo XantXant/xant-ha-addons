@@ -32,7 +32,7 @@ if __name__ == "__main__":
         print(os.listdir("/data/"))
         
         with open("/mqtt.txt") as mfile:
-            print(mfile.readlines)
+            print(mfile.readlines())
             mfile.close()
 
         with open("/data/options.json") as file:
