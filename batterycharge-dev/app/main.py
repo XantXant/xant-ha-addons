@@ -31,9 +31,9 @@ if __name__ == "__main__":
         print(os.listdir("/"))
         print(os.listdir("/data/"))
         
-        with open("/mqtt.txt") as mfile:
-            print(mfile.readlines())
-            mfile.close()
+        # with open("/mqtt.txt") as mfile:
+        #     print(mfile.readlines())
+        #     mfile.close()
 
         with open("/data/options.json") as file:
             istest = False
