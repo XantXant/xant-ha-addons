@@ -19,5 +19,10 @@ RUN pip install -r requirements.txt
 
 COPY app ./app
 
+RUN $(bashio::services mqtt "host")
+RUN $(bashio::services mqtt "port")
+RUN $(bashio::services mqtt "username")
+RUN $(bashio::services mqtt "password")
+
 # Run main.py
 CMD ["python", "/app/main.py", "notest"]
