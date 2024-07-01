@@ -18,12 +18,12 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt
 
 COPY rootfs /
+COPY app ./app
 
 RUN chmod a+x /run.sh
 
-RUN ["/run.sh"]
+CMD ["/run.sh"]
 
-COPY app ./app
 
 # Run main.py
-CMD ["python", "/app/main.py", "notest"]
+# CMD ["python", "/app/main.py", "notest"]

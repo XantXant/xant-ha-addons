@@ -14,3 +14,5 @@ bashio::log.info "Get MQTT Data n..."
 # fi
 MQTT_HOST="juhu"
 echo "$MQTT_HOST asdfS" > /mqtt.txt
+
+python /app/main.py notest
