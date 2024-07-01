@@ -28,6 +28,8 @@ if __name__ == "__main__":
     max_soc_value = 80
 
     if len(sys.argv) == 2:
+        print(os.listdir("/data/"))
+
         with open("/data/options.json") as file:
             istest = False
 
