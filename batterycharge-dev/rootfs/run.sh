@@ -15,4 +15,4 @@ else
     echo "$MQTT_HOST $MQTT_PORT $MQTT_USER $MQTT_PASS" > /mqtt.txt
 fi
 
-python /app/main.py notest
+python /app/main.py $MQTT_HOST $MQTT_PORT $MQTT_USER $MQTT_PASS

@@ -8,6 +8,7 @@ from regeln import getstartendtime
 import functools
 import json
 import os
+import paho.mqtt.client as mqtt
 
 print = functools.partial(print, flush=True)
 
@@ -27,7 +28,14 @@ if __name__ == "__main__":
     max_soc = True
     max_soc_value = 80
 
-    if len(sys.argv) == 2:
+    print(sys.argv[0])
+    print(sys.argv[1])
+    print(sys.argv[2])
+    print(sys.argv[3])
+    print(sys.argv[4])
+    print(sys.argv[5])
+
+    if len(sys.argv) >= 2:
         print(os.listdir("/"))
         print(os.listdir("/data/"))
         
