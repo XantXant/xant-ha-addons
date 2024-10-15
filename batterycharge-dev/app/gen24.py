@@ -25,16 +25,16 @@ class Gen24:
             self.client = modbus.client.client(host=host)
             self.setTimeout(75*60)
     
-    def _write(self, *DAT, FC=16, ADR=0):
+    def _write(self, *dat, fc=16, adr=0):
         with HiddenPrints():
-            self.client.write(*DAT, FC, ADR)
+            self.client.write(*dat, FC=fc, ADR=adr)
 
-    def _read(self, FC=4, ADR=0, LEN=10):
+    def _read(self, fc=4, adr=0, len=10):
         with HiddenPrints():
-            return self.client.read(FC, ADR, LEN)
+            return self.client.read(FC=fc, ADR=adr, LEN=len)
 
     def getData(self):
-        self.WChaMax, self.WChaGra, self.WDisChaGra, self.StorCtl_Mod, _, self.MinRsvPct, self.ChaState, _, _, self.ChaSt, self.OutWRte, self.InWRte, _, self.InOutWRte_RvrtTms, _, self.ChaGriSet, self.WChaMax_SF, self.WChaDisChaGra_SF, _, self.MinRsvPct_SF, self.ChaState_SF, _, _, self.InOutWRte_SF = self._read(FC=3, ADR=40345, LEN=24)
+        self.WChaMax, self.WChaGra, self.WDisChaGra, self.StorCtl_Mod, _, self.MinRsvPct, self.ChaState, _, _, self.ChaSt, self.OutWRte, self.InWRte, _, self.InOutWRte_RvrtTms, _, self.ChaGriSet, self.WChaMax_SF, self.WChaDisChaGra_SF, _, self.MinRsvPct_SF, self.ChaState_SF, _, _, self.InOutWRte_SF = self._read(fc=3, adr=40345, len=24)
 
         self.s_WChaMax_SF = ctypes.c_int16(self.WChaMax_SF).value
         self.s_WChaDisChaGra_SF = ctypes.c_int16(self.WChaDisChaGra_SF).value
@@ -106,12 +106,14 @@ class Gen24:
         self.setChaGriSet(0)
 
     def setStorCtl_Mod(self, mode):
-        self._write(mode, FC=6, ADR=40348)         # StorCtl_Mod
+        self._write(mode, fc=6, adr=40348)         # StorCtl_Mod
 
     def setDischargeRatePower(self, power):
         per = power * 100 / self.c_WChaMax
         if per > 100:
             per = 100
+        print(per)
+        print(-per)
         self.setDischargeRate(-per)
     
     def setChargeRatePower(self, power):
@@ -123,28 +125,32 @@ class Gen24:
 
     def setDischargeRate(self, percent):
         us_percent = ctypes.c_uint16(int(percent*100)).value
-        self._write(us_percent, FC=6, ADR=40355)   # DischargeRate
+        self._write(us_percent, fc=6, adr=40355)   # DischargeRate
 
     def setChargeRate(self, percent):
         us_percent = ctypes.c_uint16(int(percent*100)).value
-        self._write(us_percent, FC=6, ADR=40356)   # ChargeRate
+        self._write(us_percent, fc=6, adr=40356)   # ChargeRate
 
     def setTimeout(self, timeout):
-        self._write(timeout, FC=6, ADR=40358)   # Seconds
+        self._write(timeout, fc=6, adr=40358)   # Seconds
 
     def setMinReserve(self, percent):
         percent = percent * 100
-        self._write(percent, FC=6, ADR=40350)  # MinReserve
+        self._write(percent, fc=6, adr=40350)  # MinReserve
     
     def setChaGriSet(self, state):
-        self._write(state, FC=6, ADR=40360)
+        self._write(state, fc=6, adr=40360)
 
 
 if __name__ == "__main__":
     gen = Gen24("192.168.1.178")
     gen.printData()
 
-    # gen.chargeBattery(10000)
+    # gen.backToNormal()
+    # time.sleep(2)
+    # gen.printData()
+    # gen.enableGridCharging()
+    gen.chargeBattery(10000)
 
     # gen.dischargeBattery(10000)
     # gen.setChargeRate(100)
@@ -152,8 +158,8 @@ if __name__ == "__main__":
 
     # gen.backToNormal()
 
-    gen.setMinReserve(20)
+    # gen.setMinReserve(20)
     
-    time.sleep(5)
+    time.sleep(2)
     gen.printData()
     print(gen.getSoC())

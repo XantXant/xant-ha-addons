@@ -1,3 +1,5 @@
+## 1.0.22
+- fix modbus write
 ## 1.0.21
 - remove modbus print output
 ## 1.0.20
