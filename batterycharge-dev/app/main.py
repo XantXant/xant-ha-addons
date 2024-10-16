@@ -8,7 +8,6 @@ from regeln import getstartendtime
 import functools
 import json
 import os
-import paho.mqtt.client as mqtt
 
 print = functools.partial(print, flush=True)
 
@@ -34,7 +33,7 @@ if __name__ == "__main__":
     print(sys.argv[3])
     print(sys.argv[4])
 
-    if len(sys.argv) >= 2:
+    if len(sys.argv) == 5:
         print(os.listdir("/"))
         print(os.listdir("/data/"))
         
@@ -96,7 +95,7 @@ if __name__ == "__main__":
         print(f"Max SoC: {max_soc_value}")
         print("-------------------------------------------------")
     print("")
-    print(f"{' Start ':=^30} W")
+    print(f"{' Start ':=^30}")
 
     isCharging = False
 
@@ -117,7 +116,7 @@ if __name__ == "__main__":
             if new_fc_today != last_fc_today or new_fc_tomorrow != last_fc_tomorrow:
                 last_fc_today = new_fc_today
                 last_fc_tomorrow = new_fc_tomorrow
-                print(f'Forecast Today: {last_fc_today:5} Tomorrow: {last_fc_tomorrow:5}')
+                # print(f'Forecast Today: {last_fc_today:5} Tomorrow: {last_fc_tomorrow:5}')
 
             # Awattar
             tarif.getNewData()
@@ -133,7 +132,8 @@ if __name__ == "__main__":
 
             if hour_changed:
                 price_euro_p_mwh, price_cent_p_kwh = tarif.get_act_marcetprice(act_time.timestamp())
-                print(f'{act_time.strftime("%d.%m.%Y %H:%M:%S")} Price {price_euro_p_mwh:.2f} Euro/MWh {price_cent_p_kwh:.2f} Cent/kWh')
+                print(f'{act_time.strftime("%d.%m.%Y %H:%M")} {price_euro_p_mwh:6.2f} Euro/MWh {price_cent_p_kwh:6.2f} Cent/kWh', end='')
+                print(f'Forecast Today: {last_fc_today:6} Wh Tomorrow: {last_fc_tomorrow:6} Wh')
 
             act_tst = act_time.timestamp()
             start_tst, end_tst = getstartendtime(act_tst, rule_charge_start_hour, rule_charge_end_hour)
@@ -152,7 +152,7 @@ if __name__ == "__main__":
                         gen24.chargeBattery(rule_charge_hours_power[rank])
 
                     if hour_changed:
-                        print(f"{' Charge Battery ':=^30}", f'SoC {gen24.getSoC():.1f} Price {price_mwh:.2f} Euro/MWh {price_kwh:.2f} Cent/kWh with max. {rule_charge_hours_power[rank]} W [{rank + 1}]')
+                        print(f"{' Charge Battery ':=^30}", f'SoC {gen24.getSoC():.1f} % Price {price_mwh:.2f} Euro/MWh {price_kwh:.2f} Cent/kWh with max. {rule_charge_hours_power[rank]} W [{rank + 1}]')
 
                     # damit modbus (gen24) nicht ins timeout läuft
                     refreshcount += 1

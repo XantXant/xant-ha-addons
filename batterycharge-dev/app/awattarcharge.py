@@ -26,10 +26,11 @@ class Awattar:
             # end datum für abfrage +2 Tage
             url_date_end = self.time_of_data + datetime.timedelta(days=2)
 
-            print(f"{' Get new data from Awattar ':-^30}")
+            # print(f"{' Get new data from Awattar ':-^30}")
             if self.test is True:
                 self.webdata = {'object': 'list', 'data': [{'start_timestamp': 1702116000000, 'end_timestamp': 1702119600000, 'marketprice': 103.65, 'unit': 'Eur/MWh'}, {'start_timestamp': 1702119600000, 'end_timestamp': 1702123200000, 'marketprice': 101.88, 'unit': 'Eur/MWh'}, {'start_timestamp': 1702123200000, 'end_timestamp': 1702126800000, 'marketprice': 103.31, 'unit': 'Eur/MWh'}, {'start_timestamp': 1702126800000, 'end_timestamp': 1702130400000, 'marketprice': 104.91, 'unit': 'Eur/MWh'}, {'start_timestamp': 1702130400000, 'end_timestamp': 1702134000000, 'marketprice': 109.26, 'unit': 'Eur/MWh'}, {'start_timestamp': 1702134000000, 'end_timestamp': 1702137600000, 'marketprice': 119.93, 'unit': 'Eur/MWh'}, {'start_timestamp': 1702137600000, 'end_timestamp': 1702141200000, 'marketprice': 107.24, 'unit': 'Eur/MWh'}, {'start_timestamp': 1702141200000, 'end_timestamp': 1702144800000, 'marketprice': 104.95, 'unit': 'Eur/MWh'}, {'start_timestamp': 1702144800000, 'end_timestamp': 1702148400000, 'marketprice': 94.37, 'unit': 'Eur/MWh'}, {'start_timestamp': 1702148400000, 'end_timestamp': 1702152000000, 'marketprice': 83.06, 'unit': 'Eur/MWh'}, {'start_timestamp': 1702152000000, 'end_timestamp': 1702155600000, 'marketprice': 73.1, 'unit': 'Eur/MWh'}, {'start_timestamp': 1702155600000, 'end_timestamp': 1702159200000, 'marketprice': 61.52, 'unit': 'Eur/MWh'}, {'start_timestamp': 1702159200000, 'end_timestamp': 1702162800000, 'marketprice': 46.18, 'unit': 'Eur/MWh'}], 'url': '/at/v1/marketdata'}
             else:
+                self.webdata = {}
                 url = f"https://api.awattar.at/v1/marketdata?start={int(url_date_start.timestamp()*1000)}&end={int(url_date_end.timestamp()*1000)}"
                 # print(url)
                 try:

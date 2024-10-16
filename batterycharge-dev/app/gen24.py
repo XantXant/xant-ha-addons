@@ -112,15 +112,12 @@ class Gen24:
         per = power * 100 / self.c_WChaMax
         if per > 100:
             per = 100
-        print(per)
-        print(-per)
         self.setDischargeRate(-per)
     
     def setChargeRatePower(self, power):
         per = power * 100 / self.c_WChaMax
         if per > 100:
             per = 100
-        print(per)
         self.setChargeRate(-per)
 
     def setDischargeRate(self, percent):
@@ -150,13 +147,13 @@ if __name__ == "__main__":
     # time.sleep(2)
     # gen.printData()
     # gen.enableGridCharging()
-    gen.chargeBattery(10000)
+    # gen.chargeBattery(10000)
 
     # gen.dischargeBattery(10000)
     # gen.setChargeRate(100)
     # gen.enableGridCharging()
 
-    # gen.backToNormal()
+    gen.backToNormal()
 
     # gen.setMinReserve(20)
     

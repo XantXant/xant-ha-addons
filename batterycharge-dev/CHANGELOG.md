@@ -1,3 +1,6 @@
+## 1.0.23
+- better logging
+- forecast http error 429 --> changed to 3h intervall for pooling
 ## 1.0.22
 - fix modbus write
 ## 1.0.21
