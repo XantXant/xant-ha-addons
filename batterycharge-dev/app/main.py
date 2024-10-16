@@ -133,7 +133,7 @@ if __name__ == "__main__":
             if hour_changed:
                 price_euro_p_mwh, price_cent_p_kwh = tarif.get_act_marcetprice(act_time.timestamp())
                 print(f'{act_time.strftime("%d.%m.%Y %H:%M")} {price_euro_p_mwh:6.2f} Euro/MWh {price_cent_p_kwh:6.2f} Cent/kWh', end='')
-                print(f'Forecast Today: {last_fc_today:6} Wh Tomorrow: {last_fc_tomorrow:6} Wh')
+                print(f' Forecast Today: {last_fc_today:6} Wh Tomorrow: {last_fc_tomorrow:6} Wh')
 
             act_tst = act_time.timestamp()
             start_tst, end_tst = getstartendtime(act_tst, rule_charge_start_hour, rule_charge_end_hour)
