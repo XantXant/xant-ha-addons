@@ -14,11 +14,12 @@ print = functools.partial(print, flush=True)
 
 def on_connect(client, userdata, flags, reason_code, properties):
     if reason_code.is_failure:
-        print(f"Failed to connect: {reason_code}. loop_forever() will retry connection")
+        print(f"MQTT Failed to connect: {reason_code}")
     else:
         # we should always subscribe from on_connect callback to be sure
         # our subscribed is persisted across reconnections.
         client.subscribe("$SYS/#")
+        print("MQTT Connected!")
 
 if __name__ == "__main__":
     istest = True
