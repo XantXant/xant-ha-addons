@@ -43,6 +43,7 @@ if __name__ == "__main__":
     print(sys.argv[4])
     mqtt_host = sys.argv[1]
     mqtt_port = int(sys.argv[2])
+    print(mqtt_port, type(mqtt_port))
     mqtt_user = sys.argv[3]
     mqtt_pass = sys.argv[4]
 
