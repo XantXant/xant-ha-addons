@@ -136,12 +136,12 @@ if __name__ == "__main__":
         time.sleep(60)
         print("MQTT wait for connection...")
 
-    mqttc.publish("homeassistant/sensor/batterycharge/config", '{"name": "Battery SoC", "device_class": "battery", "state_topic": "batterycharge/state"}, "value_template": "{{{{ value_json.batterysoc}}}}"')
+    mqttc.publish("homeassistant/sensor/batterycharge/config", '{ "name": "Battery SoC", "device_class": "battery", "state_topic": "batterycharge/state"}, "value_template": "{{{{ value_json.batterysoc}}}}" ')
 
     try:
         while True:
             # MQTT
-            mqttc.publish("batterycharge/sate", f'{{"batterysoc": {gen24.getSoC()}}}')
+            mqttc.publish("batterycharge/sate", f'{{ "batterysoc": {gen24.getSoC()}}} ')
             
             # Forecast
             new_fc_today = fc.getForecastsolarToday()
