@@ -141,7 +141,7 @@ if __name__ == "__main__":
     try:
         while True:
             # MQTT
-            mqttc.publish("batterycharge/sate", f'{{ "batterysoc": {gen24.getSoC()}}} ')
+            mqttc.publish("batterycharge/state", f'{{ "batterysoc": {gen24.getSoC()}}} ')
             
             # Forecast
             new_fc_today = fc.getForecastsolarToday()
