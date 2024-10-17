@@ -8,8 +8,17 @@ from regeln import getstartendtime
 import functools
 import json
 import os
+import paho.mqtt.client as mqtt
 
 print = functools.partial(print, flush=True)
+
+def on_connect(client, userdata, flags, reason_code, properties):
+    if reason_code.is_failure:
+        print(f"Failed to connect: {reason_code}. loop_forever() will retry connection")
+    else:
+        # we should always subscribe from on_connect callback to be sure
+        # our subscribed is persisted across reconnections.
+        client.subscribe("$SYS/#")
 
 if __name__ == "__main__":
     istest = True
@@ -32,14 +41,18 @@ if __name__ == "__main__":
     print(sys.argv[2])
     print(sys.argv[3])
     print(sys.argv[4])
+    mqtt_host = sys.argv[1]
+    mqtt_port = sys.argv[2]
+    mqtt_user = sys.argv[3]
+    mqtt_pass = sys.argv[4]
 
     if len(sys.argv) == 5:
-        print(os.listdir("/"))
-        print(os.listdir("/data/"))
+        # print(os.listdir("/"))
+        # print(os.listdir("/data/"))
         
-        with open("/mqtt.txt") as mfile:
-            print(mfile.readlines())
-            mfile.close()
+        # with open("/data/mqtt.txt") as mfile:
+        #     print(mfile.readlines())
+        #     mfile.close()
 
         with open("/data/options.json") as file:
             istest = False
@@ -107,6 +120,15 @@ if __name__ == "__main__":
 
     last_fc_today = 0
     last_fc_tomorrow = 0
+
+    mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
+    mqttc.on_connect = on_connect
+
+    mqttc.user_data_set([])
+    mqttc.username_pw_set(mqtt_user, mqtt_pass)
+    mqttc.connect(mqtt_host, mqtt_port)
+
+    mqttc.loop_start()
 
     try:
         while True:
@@ -181,3 +203,5 @@ if __name__ == "__main__":
             time.sleep(60)
     except KeyboardInterrupt:
         print("Exit")
+
+    mqttc.loop_stop()

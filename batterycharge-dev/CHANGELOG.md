@@ -1,3 +1,5 @@
+## 1.0.24
+- mqtt test 5
 ## 1.0.23
 - better logging
 - forecast http error 429 --> changed to 3h intervall for pooling
