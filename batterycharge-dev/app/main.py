@@ -136,6 +136,7 @@ if __name__ == "__main__":
         time.sleep(5)
 
     config = {
+        "batterysoc":
         {
             "name": "Battery SoC",
             "device_class": "battery",
@@ -144,6 +145,7 @@ if __name__ == "__main__":
             "unit_of_measurement": "%",
             "suggested_display_precision": 1
         },
+        "marcetprice_kwh":
         {
             "name": "Marcet Price kWh",
             "state_topic": "batterycharge/state",
@@ -151,6 +153,7 @@ if __name__ == "__main__":
             "unit_of_measurement": "€/kWh",
             "suggested_display_precision": 2
         },
+        "marcetprice_Mwh":
         {
             "name": "Marcet Price MWh",
             "state_topic": "batterycharge/state",
@@ -158,12 +161,14 @@ if __name__ == "__main__":
             "unit_of_measurement": "€/MWh",
             "suggested_display_precision": 2
         },
+        "forecast_today":
         {
             "name": "Forecast Today",
             "state_topic": "batterycharge/state",
             "value_template": "{{ value_json.forecast_today }}",
             "unit_of_measurement": "Wh",
         },
+        "forecast_tomorrow":
         {
             "name": "Forecast Tomorrow",
             "state_topic": "batterycharge/state",
@@ -172,7 +177,8 @@ if __name__ == "__main__":
         },
     }
 
-    mqttc.publish("homeassistant/sensor/batterycharge/config", json.dumps(config, ensure_ascii=False))
+    for d in config:
+        mqttc.publish(f'homeassistant/sensor/batterycharge/{d}/config', json.dumps(config[d], ensure_ascii=False))
 
     try:
         while True:
