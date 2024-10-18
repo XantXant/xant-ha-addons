@@ -37,14 +37,13 @@ if __name__ == "__main__":
     max_soc = True
     max_soc_value = 80
 
-    print(sys.argv[0])
-    print(sys.argv[1])
-    print(sys.argv[2])
-    print(sys.argv[3])
-    print(sys.argv[4])
+    # print(sys.argv[0])
+    # print(sys.argv[1])
+    # print(sys.argv[2])
+    # print(sys.argv[3])
+    # print(sys.argv[4])
     mqtt_host = sys.argv[1]
     mqtt_port = int(sys.argv[2])
-    print(mqtt_port, type(mqtt_port))
     mqtt_user = sys.argv[3]
     mqtt_pass = sys.argv[4]
 
@@ -64,7 +63,7 @@ if __name__ == "__main__":
 
             data = json.load(file)
 
-            print(data)
+            # print(data)
 
             host = data["gen24_ip_dns"]
             latitude = data["forecast_latitude"]
