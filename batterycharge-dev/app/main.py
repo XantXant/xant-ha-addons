@@ -51,7 +51,7 @@ if __name__ == "__main__":
     if len(sys.argv) == 5:
         # print(os.listdir("/"))
         # print(os.listdir("/data/"))
-        
+
         # with open("/data/mqtt.txt") as mfile:
         #     print(mfile.readlines())
         #     mfile.close()
@@ -136,13 +136,48 @@ if __name__ == "__main__":
         print("MQTT wait for connection...")
         time.sleep(5)
 
-    mqttc.publish("homeassistant/sensor/batterycharge/config", '{ "name": "Battery SoC", "device_class": "battery", "state_topic": "batterycharge/state", "value_template": "{{ value_json.batterysoc }}", "unit_of_measurement": "%" }')
+    config = {
+        {
+            "name": "Battery SoC",
+            "device_class": "battery",
+            "state_topic": "batterycharge/state",
+            "value_template": "{{ value_json.batterysoc }}",
+            "unit_of_measurement": "%",
+            "suggested_display_precision": 1
+        },
+        {
+            "name": "Marcet Price kWh",
+            "state_topic": "batterycharge/state",
+            "value_template": "{{ value_json.marcetprice_kwh }}",
+            "unit_of_measurement": "€/kWh",
+            "suggested_display_precision": 2
+        },
+        {
+            "name": "Marcet Price MWh",
+            "state_topic": "batterycharge/state",
+            "value_template": "{{ value_json.marcetprice_Mwh }}",
+            "unit_of_measurement": "€/MWh",
+            "suggested_display_precision": 2
+        },
+        {
+            "name": "Forecast Today",
+            "state_topic": "batterycharge/state",
+            "value_template": "{{ value_json.forecast_today }}",
+            "unit_of_measurement": "Wh",
+        },
+        {
+            "name": "Forecast Tomorrow",
+            "state_topic": "batterycharge/state",
+            "value_template": "{{ value_json.forecast_tomorrow }}",
+            "unit_of_measurement": "Wh",
+        },
+    }
+
+    mqttc.publish("homeassistant/sensor/batterycharge/config", json.dumps(config, ensure_ascii=False))
 
     try:
         while True:
-            # MQTT
-            mqttc.publish("batterycharge/state", f'{{ "batterysoc": {gen24.getSoC():.1f}}} ')
-            
+
             # Forecast
             new_fc_today = fc.getForecastsolarToday()
             new_fc_tomorrow = fc.getForecastsolarTomorrow()
@@ -167,6 +202,16 @@ if __name__ == "__main__":
                 price_euro_p_mwh, price_cent_p_kwh = tarif.get_act_marcetprice(act_time.timestamp())
                 print(f'{act_time.strftime("%d.%m.%Y %H:%M")} {price_euro_p_mwh:6.2f} Euro/MWh {price_cent_p_kwh:6.2f} Cent/kWh', end='')
                 print(f' Forecast Today: {last_fc_today:6} Wh Tomorrow: {last_fc_tomorrow:6} Wh')
+
+            # MQTT
+            mqtt_data = {
+                "batterysoc": gen24.getSoC(),
+                "marcetprice_kwh": price_cent_p_kwh,
+                "marcetprice_Mwh": price_euro_p_mwh,
+                "forecast_today": last_fc_today,
+                "forecast_tomorrow": last_fc_tomorrow,
+            }
+            mqttc.publish("batterycharge/state", json.dumps(mqtt_data, ensure_ascii=False))
 
             act_tst = act_time.timestamp()
             start_tst, end_tst = getstartendtime(act_tst, rule_charge_start_hour, rule_charge_end_hour)
