@@ -136,44 +136,49 @@ if __name__ == "__main__":
         time.sleep(5)
 
     config = {
-        "batterysoc":
-        {
-            "name": "Battery SoC",
+        "batterysoc": {
+            # "name": "Battery SoC",
+            "unique_id": "batterysoc",
             "device_class": "battery",
             "state_topic": "batterycharge/state",
             "value_template": "{{ value_json.batterysoc }}",
             "unit_of_measurement": "%",
-            "suggested_display_precision": 1
+            "suggested_display_precision": 1,
+            "device": {"name": "Battery Charge", "identifiers": "batterycharge"},
         },
-        "marcetprice_kwh":
-        {
-            "name": "Marcet Price kWh",
+        "marcetprice_kwh": {
+            # "name": "Marcet Price kWh",
+            "unique_id": "marcetpricekwh",
             "state_topic": "batterycharge/state",
             "value_template": "{{ value_json.marcetprice_kwh }}",
             "unit_of_measurement": "€/kWh",
-            "suggested_display_precision": 2
+            "suggested_display_precision": 2,
+            "device": {"name": "Battery Charge", "identifiers": "batterycharge"},
         },
-        "marcetprice_Mwh":
-        {
-            "name": "Marcet Price MWh",
+        "marcetprice_Mwh": {
+            # "name": "Marcet Price MWh",
+            "unique_id": "marcetpricemwh",
             "state_topic": "batterycharge/state",
             "value_template": "{{ value_json.marcetprice_Mwh }}",
             "unit_of_measurement": "€/MWh",
-            "suggested_display_precision": 2
+            "suggested_display_precision": 2,
+            "device": {"name": "Battery Charge", "identifiers": "batterycharge"},
         },
-        "forecast_today":
-        {
-            "name": "Forecast Today",
+        "forecast_today": {
+            # "name": "Forecast Today",
+            "unique_id": "forecasttoday",
             "state_topic": "batterycharge/state",
             "value_template": "{{ value_json.forecast_today }}",
             "unit_of_measurement": "Wh",
+            "device": {"name": "Battery Charge", "identifiers": "batterycharge"},
         },
-        "forecast_tomorrow":
-        {
-            "name": "Forecast Tomorrow",
+        "forecast_tomorrow": {
+            # "name": "Forecast Tomorrow",
+            "unique_id": "forecasttomorrow",
             "state_topic": "batterycharge/state",
             "value_template": "{{ value_json.forecast_tomorrow }}",
             "unit_of_measurement": "Wh",
+            "device": {"name": "Battery Charge", "identifiers": "batterycharge"},
         },
     }
 
