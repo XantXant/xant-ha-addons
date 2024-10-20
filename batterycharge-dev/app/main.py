@@ -239,7 +239,7 @@ if __name__ == "__main__":
 
     for c in config:
         for d in config[c]:
-            mqttc.publish(f'homeassistant/sensor/batterycharge/{d}/config', json.dumps(config[c][d], ensure_ascii=False))
+            mqttc.publish(f'homeassistant/{c}/batterycharge/{d}/config', json.dumps(config[c][d], ensure_ascii=False))
 
     try:
         while True:
@@ -276,6 +276,9 @@ if __name__ == "__main__":
                 "marcetprice_Mwh": price_euro_p_mwh,
                 "forecast_today": last_fc_today,
                 "forecast_tomorrow": last_fc_tomorrow,
+                "lowestpricecharging_state": "ON",
+                "maxsoc_state": "OFF",
+
             }
             mqttc.publish("batterycharge/state", json.dumps(mqtt_data, ensure_ascii=False))
 
