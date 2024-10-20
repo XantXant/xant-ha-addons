@@ -10,7 +10,7 @@ class Awattar:
     def __init__(self, test=False):
         self.test = test
         self.time_of_data = datetime.datetime.now()
-        self.time_to_get_new_data = datetime.datetime.now() - datetime.timedelta(hours=3)
+        self.time_to_get_new_data = datetime.datetime.now() - datetime.timedelta(hours=1)
         self.getNewData()
 
     def getNewData(self):
