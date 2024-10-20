@@ -10,7 +10,7 @@ class Awattar:
     def __init__(self, test=False):
         self.test = test
         self.time_of_data = datetime.datetime.now()
-        self.time_to_get_new_data = datetime.datetime.now() - datetime.timedelta(hours=1)
+        self.time_to_get_new_data = datetime.datetime.now() - datetime.timedelta(hours=3)
         self.getNewData()
 
     def getNewData(self):
@@ -101,6 +101,7 @@ class Awattar:
         return price*1.2, price*1.2/10
 
     def get_act_marcetprice(self, tst):
+        self.getNewData()
         price = 0
         for elem in self.data_sorted:
             elem_start = elem['start_timestamp'] // 1000
