@@ -136,79 +136,110 @@ if __name__ == "__main__":
         time.sleep(5)
 
     config = {
-        "batterysoc": {
-            "unique_id": "batterysoc",
-            "name": "Battery SoC",
-            "device_class": "battery",
-            "state_topic": "batterycharge/state",
-            "value_template": "{{ value_json.batterysoc }}",
-            "unit_of_measurement": "%",
-            "suggested_display_precision": 1,
-            "device": {
-                "name": "Battery Charge",
-                "identifiers": ["batterycharge"],
-                "manufacturer": "Developer",
-                "model": "Battery Charge",
+        "sensor": {
+            "batterysoc": {
+                "unique_id": "batterysoc",
+                "name": "Battery SoC",
+                "device_class": "battery",
+                "state_topic": "batterycharge/state",
+                "value_template": "{{ value_json.batterysoc }}",
+                "unit_of_measurement": "%",
+                "suggested_display_precision": 1,
+                "device": {
+                    "name": "Battery Charge",
+                    "identifiers": ["batterycharge"],
+                    "manufacturer": "Developer",
+                    "model": "Battery Charge",
+                },
+            },
+            "marcetprice_kwh": {
+                "unique_id": "marcetpricekwh",
+                "name": "Marcet Price kWh",
+                "state_topic": "batterycharge/state",
+                "value_template": "{{ value_json.marcetprice_kwh }}",
+                "unit_of_measurement": "c/kWh",
+                "suggested_display_precision": 2,
+                "device": {
+                    "name": "Battery Charge",
+                    "identifiers": ["batterycharge"],
+                    "manufacturer": "Developer",
+                    "model": "Battery Charge",
+                },
+            },
+            "marcetprice_Mwh": {
+                "unique_id": "marcetpricemwh",
+                "name": "Marcet Price MWh",
+                "state_topic": "batterycharge/state",
+                "value_template": "{{ value_json.marcetprice_Mwh }}",
+                "unit_of_measurement": "€/MWh",
+                "suggested_display_precision": 2,
+                "device": {
+                    "name": "Battery Charge",
+                    "identifiers": ["batterycharge"],
+                    "manufacturer": "Developer",
+                    "model": "Battery Charge",
+                },
+            },
+            "forecast_today": {
+                "unique_id": "forecasttoday",
+                "name": "Forecast Today",
+                "state_topic": "batterycharge/state",
+                "value_template": "{{ value_json.forecast_today }}",
+                "unit_of_measurement": "Wh",
+                "device": {
+                    "name": "Battery Charge",
+                    "identifiers": ["batterycharge"],
+                    "manufacturer": "Developer",
+                    "model": "Battery Charge",
+                },
+            },
+            "forecast_tomorrow": {
+                "unique_id": "forecasttomorrow",
+                "name": "Forecast Tomorrow",
+                "state_topic": "batterycharge/state",
+                "value_template": "{{ value_json.forecast_tomorrow }}",
+                "unit_of_measurement": "Wh",
+                "device": {
+                    "name": "Battery Charge",
+                    "identifiers": ["batterycharge"],
+                    "manufacturer": "Developer",
+                    "model": "Battery Charge",
+                },
             },
         },
-        "marcetprice_kwh": {
-            "unique_id": "marcetpricekwh",
-            "name": "Marcet Price kWh",
-            "state_topic": "batterycharge/state",
-            "value_template": "{{ value_json.marcetprice_kwh }}",
-            "unit_of_measurement": "c/kWh",
-            "suggested_display_precision": 2,
-            "device": {
-                "name": "Battery Charge",
-                "identifiers": ["batterycharge"],
-                "manufacturer": "Developer",
-                "model": "Battery Charge",
+        "switch": {
+            "lowestpricecharging_state": {
+                "unique_id": "lowestpricecharging_state",
+                "name": "Lowest price charging",
+                "command_topic": "batterycharge/lowestpricecharging_state/set",
+                "state_topic": "batterycharge/state",
+                "value_template": "{{ value_json.lowestpricecharging_state }}",
+                "device": {
+                    "name": "Battery Charge",
+                    "identifiers": ["batterycharge"],
+                    "manufacturer": "Developer",
+                    "model": "Battery Charge",
+                },
             },
-        },
-        "marcetprice_Mwh": {
-            "unique_id": "marcetpricemwh",
-            "name": "Marcet Price MWh",
-            "state_topic": "batterycharge/state",
-            "value_template": "{{ value_json.marcetprice_Mwh }}",
-            "unit_of_measurement": "€/MWh",
-            "suggested_display_precision": 2,
-            "device": {
-                "name": "Battery Charge",
-                "identifiers": ["batterycharge"],
-                "manufacturer": "Developer",
-                "model": "Battery Charge",
-            },
-        },
-        "forecast_today": {
-            "unique_id": "forecasttoday",
-            "name": "Forecast Today",
-            "state_topic": "batterycharge/state",
-            "value_template": "{{ value_json.forecast_today }}",
-            "unit_of_measurement": "Wh",
-            "device": {
-                "name": "Battery Charge",
-                "identifiers": ["batterycharge"],
-                "manufacturer": "Developer",
-                "model": "Battery Charge",
-            },
-        },
-        "forecast_tomorrow": {
-            "unique_id": "forecasttomorrow",
-            "name": "Forecast Tomorrow",
-            "state_topic": "batterycharge/state",
-            "value_template": "{{ value_json.forecast_tomorrow }}",
-            "unit_of_measurement": "Wh",
-            "device": {
-                "name": "Battery Charge",
-                "identifiers": ["batterycharge"],
-                "manufacturer": "Developer",
-                "model": "Battery Charge",
+            "maxsoc_state": {
+                "unique_id": "maxsoc_state",
+                "name": "Max SoC",
+                "command_topic": "batterycharge/maxsoc_state/set",
+                "state_topic": "batterycharge/state",
+                "value_template": "{{ value_json.maxsoc_state }}",
+                "device": {
+                    "name": "Battery Charge",
+                    "identifiers": ["batterycharge"],
+                    "manufacturer": "Developer",
+                    "model": "Battery Charge",
+                },
             },
         },
     }
 
-    for d in config:
-        mqttc.publish(f'homeassistant/sensor/batterycharge/{d}/config', json.dumps(config[d], ensure_ascii=False))
+    for c in config:
+        for d in config[c]:
+            mqttc.publish(f'homeassistant/sensor/batterycharge/{d}/config', json.dumps(config[c][d], ensure_ascii=False))
 
     try:
         while True:
