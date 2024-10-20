@@ -156,7 +156,7 @@ if __name__ == "__main__":
             "name": "Marcet Price kWh",
             "state_topic": "batterycharge/state",
             "value_template": "{{ value_json.marcetprice_kwh }}",
-            "unit_of_measurement": "€/kWh",
+            "unit_of_measurement": "c/kWh",
             "suggested_display_precision": 2,
             "device": {
                 "name": "Battery Charge",
